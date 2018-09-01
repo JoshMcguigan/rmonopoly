@@ -50,57 +50,50 @@ fn press_enter() -> bool {
 fn main() {
     let number_of_players = cli::get_number_of_players();
 
-    let mut player: Vec<Player> = Vec::new();
+    let mut players: Vec<Player> = Vec::new();
     for i in 0..number_of_players {
         let player_name = cli::get_player_name(i);
-        player.push(Player::new(player_name));
+        players.push(Player::new(player_name));
     }
-    let mut turn: usize = 0;
     loop {
-        loop {
-            if turn >= number_of_players {
-                turn = 0;
-            }
-            if player[turn].in_jail {
+        for mut player in players.iter_mut() {
+            if player.in_jail {
                 cli::printnls(100);
 
-                if !jail_roll(&mut player[turn]) {
-                    player[turn].in_jail = false;
+                if !jail_roll(player) {
+                    player.in_jail = false;
                 }
-                turn += 1;
-                break;
+                continue;
             }
             let first_dice = rand::thread_rng().gen_range(1, 7);
             let second_dice = rand::thread_rng().gen_range(1, 7);
 
             cli::printnls(100);
 
-            println!("{}, it's your turn.", player[turn].name);
+            println!("{}, it's your turn.", player.name);
 
             println!("First dice is: {}", first_dice);
             println!("Second dice is: {}", second_dice);
 
             if first_dice != second_dice {
-                player[turn].doubles_roll = 0;
-                turn += 1;
-                break;
+                player.doubles_roll = 0;
+                continue;
             }
             else {
-                player[turn].doubles_roll += 1;
+                player.doubles_roll += 1;
 
-                if player[turn].doubles_roll < 3 {
+                if player.doubles_roll < 3 {
                     println!("You rolled doubles! Play again!");
 
-                    if player[turn].doubles_roll == 2 {
+                    if player.doubles_roll == 2 {
                         println!("If you roll doubles again, you'll go to jail!");
                     }
                 }
-                if player[turn].doubles_roll >= 3 {
-                    player[turn].in_jail = true;
-                    player[turn].doubles_roll = 0;
+                if player.doubles_roll >= 3 {
+                    player.in_jail = true;
+                    player.doubles_roll = 0;
                     println!("Go to jail!");
-                    turn += 1;
-                    break;
+                    continue;
                 }
             }
         }
