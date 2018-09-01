@@ -36,7 +36,7 @@ fn main() {
         players.push(Player::new(player_name));
     }
 
-    loop {
+    'game: loop {
         for mut player in players.iter_mut() {
             if player.in_jail {
                 cli::printnls(100);
@@ -50,8 +50,6 @@ fn main() {
             cli::printnls(100);
 
             println!("{}, it's your turn.", player.name);
-
-            let dice = Dice::roll();
 
             while Dice::roll().is_doubles() {
                 player.doubles_roll += 1;
@@ -67,12 +65,8 @@ fn main() {
             }
 
             player.doubles_roll = 0;
-        }
-        if cli::press_enter() {
-            continue;
-        }
-        else {
-            break;
+
+            if !cli::press_enter() { break 'game; }
         }
     }
 }
