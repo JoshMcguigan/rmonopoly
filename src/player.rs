@@ -1,9 +1,7 @@
 use dice::Dice;
-use cli;
 
 pub struct Player {
     pub name: String,
-    pub doubles_roll: u8,
     pub jail_count: u8,
     pub in_jail: bool,
 }
@@ -12,43 +10,36 @@ impl Player {
     pub fn new(name: String) -> Self {
         Player {
             name,
-            doubles_roll: 0,
             jail_count: 0,
             in_jail: false,
         }
     }
 
     pub fn take_turn(&mut self) {
+        let mut doubles_roll = 0u8;
+
         if self.in_jail {
-            cli::printnls(100);
-
-            if !self.jail_roll() {
-                self.in_jail = false;
-            }
+            self.jail_roll();
             return;
-        }
+        } else {
+            println!("{}, it's your turn.", self.name);
 
-        cli::printnls(100);
+            while Dice::roll().is_doubles() {
+                doubles_roll += 1;
 
-        println!("{}, it's your turn.", self.name);
-
-        while Dice::roll().is_doubles() {
-            self.doubles_roll += 1;
-
-            match self.doubles_roll {
-                1 => println!("You rolled doubles! Play again!"),
-                2 => println!("Doubles! If you do it again, you'll go to jail!"),
-                3 | _ => {
-                    self.in_jail = true;
-                    println!("Go to jail!");
+                match doubles_roll {
+                    1 => println!("You rolled doubles! Play again!"),
+                    2 => println!("Doubles! If you do it again, you'll go to jail!"),
+                    3 | _ => {
+                        self.in_jail = true;
+                        println!("Go to jail!");
+                    }
                 }
             }
         }
-
-        self.doubles_roll = 0;
     }
 
-    fn jail_roll(self: &mut Player) -> bool {
+    fn jail_roll(self: &mut Player) {
         println!("{} is in jail", self.name);
         self.jail_count += 1;
 
@@ -56,14 +47,16 @@ impl Player {
 
         if dice.is_doubles() {
             println!("{} got out of jail!", self.name);
-            self.jail_count = 0;
-            return false;
+            self.get_out_of_jail();
         }
         if self.jail_count == 3 {
             println!("You must pay $50 to get out now.");
-            self.jail_count = 0;
-            return false;
+            self.get_out_of_jail();
         }
-        true
+    }
+
+    fn get_out_of_jail(&mut self) {
+        self.jail_count = 0;
+        self.in_jail = false;
     }
 }

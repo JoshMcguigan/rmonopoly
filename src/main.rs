@@ -17,6 +17,7 @@ fn main() {
 
     'game: loop {
         for mut player in players.iter_mut() {
+            cli::printnls(100);
             player.take_turn();
 
             if !cli::press_enter() { break 'game; }
