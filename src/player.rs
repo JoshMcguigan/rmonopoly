@@ -1,9 +1,9 @@
 use dice::Dice;
 
 pub struct Player {
-    pub name: String,
-    pub jail_count: u8,
-    pub in_jail: bool,
+    name: String,
+    jail_count: u8,
+    in_jail: bool,
 }
 
 impl Player {
