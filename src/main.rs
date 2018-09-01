@@ -35,6 +35,7 @@ fn main() {
         let player_name = cli::get_player_name(i);
         players.push(Player::new(player_name));
     }
+
     loop {
         for mut player in players.iter_mut() {
             if player.in_jail {
@@ -52,27 +53,20 @@ fn main() {
 
             let dice = Dice::roll();
 
-            if !dice.is_doubles() {
-                player.doubles_roll = 0;
-                continue;
-            }
-            else {
+            while Dice::roll().is_doubles() {
                 player.doubles_roll += 1;
 
-                if player.doubles_roll < 3 {
-                    println!("You rolled doubles! Play again!");
-
-                    if player.doubles_roll == 2 {
-                        println!("If you roll doubles again, you'll go to jail!");
+                match player.doubles_roll {
+                    1 => println!("You rolled doubles! Play again!"),
+                    2 => println!("Doubles! If you do it again, you'll go to jail!"),
+                    3 | _ => {
+                        player.in_jail = true;
+                        println!("Go to jail!");
                     }
                 }
-                if player.doubles_roll >= 3 {
-                    player.in_jail = true;
-                    player.doubles_roll = 0;
-                    println!("Go to jail!");
-                    continue;
-                }
             }
+
+            player.doubles_roll = 0;
         }
         if cli::press_enter() {
             continue;
