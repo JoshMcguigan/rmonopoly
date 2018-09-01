@@ -53,12 +53,7 @@ fn main() {
 
     let mut player_name: Vec<String> = Vec::new();
     for i in 0..number_of_players {
-        let mut name = String::new();
-        println!("Enter the name for player number {}.", i + 1);
-        io::stdin().read_line(&mut name)
-            .expect("Failed to read stdin.");
-
-        player_name.push(name.trim().to_string());
+        player_name.push(cli::get_player_name(i));
     }
     let mut player: Vec<Player> = Vec::new();
     for i in 0..number_of_players {
