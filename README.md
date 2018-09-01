@@ -1,5 +1,1 @@
-After compiled, just run the file.
-
-It'll ask you how many players there are and their names.
-
-Everything's pretty self explaintory.
+Forked for discussion [here](https://www.reddit.com/r/rust/comments/9bzzvr/with_almost_double_the_lines_of_code_ive/?ref=share&ref_source=link)

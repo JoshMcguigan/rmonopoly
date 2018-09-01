@@ -10,6 +10,17 @@ struct Player {
     in_jail: bool,
 }
 
+impl Player {
+    fn new(name: String) -> Self {
+        Player {
+            name,
+            doubles_roll: 0,
+            jail_count: 0,
+            in_jail: false,
+        }
+    }
+}
+
 fn get_number_of_players() -> usize {
     loop {
         let mut number_of_players = String::new();
@@ -28,15 +39,6 @@ fn get_number_of_players() -> usize {
             continue;
         }
         return number_of_players
-    }
-}
-
-fn create_player(name: String) -> Player {
-    Player {
-        name,
-        doubles_roll: 0,
-        jail_count: 0,
-        in_jail: false,
     }
 }
 
@@ -85,15 +87,6 @@ fn press_enter() -> bool {
     }
 }
 
-//fn continue_loop() {
-//    game_loop();
-//}
-
-//fn game_loop() {
-//
-//}
-
-
 fn main() {
     println!("How many players?");
     let number_of_players = get_number_of_players();
@@ -109,7 +102,7 @@ fn main() {
     }
     let mut player: Vec<Player> = Vec::new();
     for i in 0..number_of_players {
-        player.push(create_player(player_name[i].to_string()));
+        player.push(Player::new(player_name[i].to_string()));
     }
     let mut turn: usize = 0;
     loop {
