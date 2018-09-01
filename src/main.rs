@@ -1,6 +1,5 @@
 extern crate rand;
 
-use rand::Rng;
 use std::io;
 
 mod player;
@@ -8,17 +7,16 @@ use player::Player;
 
 mod cli;
 
+mod dice;
+use dice::Dice;
+
 fn jail_roll(jailed_player: &mut Player) -> bool {
     println!("{} is in jail", jailed_player.name);
     jailed_player.jail_count += 1;
 
-    let first_dice = rand::thread_rng().gen_range(1, 7);
-    let second_dice = rand::thread_rng().gen_range(1, 7);
+    let dice = Dice::roll();
 
-    println!("First dice is: {}", first_dice);
-    println!("Second dice is: {}", second_dice);
-
-    if first_dice == second_dice {
+    if dice.is_doubles() {
         println!("{} got out of jail!", jailed_player.name);
         jailed_player.jail_count = 0;
         return false;
@@ -65,17 +63,14 @@ fn main() {
                 }
                 continue;
             }
-            let first_dice = rand::thread_rng().gen_range(1, 7);
-            let second_dice = rand::thread_rng().gen_range(1, 7);
 
             cli::printnls(100);
 
             println!("{}, it's your turn.", player.name);
 
-            println!("First dice is: {}", first_dice);
-            println!("Second dice is: {}", second_dice);
+            let dice = Dice::roll();
 
-            if first_dice != second_dice {
+            if !dice.is_doubles() {
                 player.doubles_roll = 0;
                 continue;
             }
