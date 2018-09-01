@@ -51,13 +51,10 @@ fn main() {
     println!("How many players?");
     let number_of_players = cli::get_number_of_players();
 
-    let mut player_name: Vec<String> = Vec::new();
-    for i in 0..number_of_players {
-        player_name.push(cli::get_player_name(i));
-    }
     let mut player: Vec<Player> = Vec::new();
     for i in 0..number_of_players {
-        player.push(Player::new(player_name[i].to_string()));
+        let player_name = cli::get_player_name(i);
+        player.push(Player::new(player_name));
     }
     let mut turn: usize = 0;
     loop {
