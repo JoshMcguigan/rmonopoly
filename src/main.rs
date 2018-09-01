@@ -3,23 +3,8 @@ extern crate rand;
 use rand::Rng;
 use std::io;
 
-struct Player {
-    name: String,
-    doubles_roll: u8,
-    jail_count: u8,
-    in_jail: bool,
-}
-
-impl Player {
-    fn new(name: String) -> Self {
-        Player {
-            name,
-            doubles_roll: 0,
-            jail_count: 0,
-            in_jail: false,
-        }
-    }
-}
+mod player;
+use player::*;
 
 fn get_number_of_players() -> usize {
     loop {
