@@ -4,28 +4,9 @@ use rand::Rng;
 use std::io;
 
 mod player;
-use player::*;
+use player::Player;
 
-fn get_number_of_players() -> usize {
-    loop {
-        let mut number_of_players = String::new();
-        io::stdin().read_line(&mut number_of_players)
-            .expect("Failed to read stdin.");
-
-        let number_of_players: usize = match number_of_players.trim().parse() {
-            Ok(nop) => nop,
-            Err(_) => {
-                println!("Please enter an integer.");
-                continue;
-            },
-        };
-        if number_of_players == 0 {
-            println!("You can't play and not play at the same time. This isn't Quantum Theory.");
-            continue;
-        }
-        return number_of_players
-    }
-}
+mod cli;
 
 fn jail_roll(jailed_player: &mut Player) -> bool {
     println!("{} is in jail", jailed_player.name);
@@ -50,12 +31,6 @@ fn jail_roll(jailed_player: &mut Player) -> bool {
     true
 }
 
-fn printnls(newlines: u8) {
-    for _ in 0..newlines {
-        print!("\n");
-    }
-}
-
 fn press_enter() -> bool {
     println!("Press ENTER or RETURN to continue.");
     println!("Press a key before ENTER or RETURN to quit.");
@@ -74,7 +49,7 @@ fn press_enter() -> bool {
 
 fn main() {
     println!("How many players?");
-    let number_of_players = get_number_of_players();
+    let number_of_players = cli::get_number_of_players();
 
     let mut player_name: Vec<String> = Vec::new();
     for i in 0..number_of_players {
@@ -96,7 +71,7 @@ fn main() {
                 turn = 0;
             }
             if player[turn].in_jail {
-                printnls(100);
+                cli::printnls(100);
 
                 if !jail_roll(&mut player[turn]) {
                     player[turn].in_jail = false;
@@ -107,7 +82,7 @@ fn main() {
             let first_dice = rand::thread_rng().gen_range(1, 7);
             let second_dice = rand::thread_rng().gen_range(1, 7);
 
-            printnls(100);
+            cli::printnls(100);
 
             println!("{}, it's your turn.", player[turn].name);
 
