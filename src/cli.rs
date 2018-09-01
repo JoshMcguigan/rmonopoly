@@ -1,6 +1,7 @@
 use std::io;
 
 pub fn get_number_of_players() -> usize {
+    println!("How many players?");
     loop {
         let mut number_of_players = String::new();
         io::stdin().read_line(&mut number_of_players)

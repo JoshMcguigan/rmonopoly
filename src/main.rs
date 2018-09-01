@@ -48,7 +48,6 @@ fn press_enter() -> bool {
 }
 
 fn main() {
-    println!("How many players?");
     let number_of_players = cli::get_number_of_players();
 
     let mut player: Vec<Player> = Vec::new();
