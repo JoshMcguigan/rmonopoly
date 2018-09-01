@@ -1,7 +1,5 @@
 extern crate rand;
 
-use std::io;
-
 mod player;
 use player::Player;
 
@@ -27,22 +25,6 @@ fn jail_roll(jailed_player: &mut Player) -> bool {
         return false;
     }
     true
-}
-
-fn press_enter() -> bool {
-    println!("Press ENTER or RETURN to continue.");
-    println!("Press a key before ENTER or RETURN to quit.");
-
-    let mut quit_input = String::new();
-    io::stdin().read_line(&mut quit_input)
-    .expect("Failed to read line.");
-
-    if quit_input.starts_with('\n') {
-        return true;
-    }
-    else {
-        return false;
-    }
 }
 
 fn main() {
@@ -92,7 +74,7 @@ fn main() {
                 }
             }
         }
-        if press_enter() {
+        if cli::press_enter() {
             continue;
         }
         else {

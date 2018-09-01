@@ -36,3 +36,19 @@ pub fn printnls(newlines: u8) {
         print!("\n");
     }
 }
+
+pub fn press_enter() -> bool {
+    println!("Press ENTER or RETURN to continue.");
+    println!("Press a key before ENTER or RETURN to quit.");
+
+    let mut quit_input = String::new();
+    io::stdin().read_line(&mut quit_input)
+        .expect("Failed to read line.");
+
+    if quit_input.starts_with('\n') {
+        return true;
+    }
+        else {
+            return false;
+        }
+}
