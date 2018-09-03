@@ -3,20 +3,15 @@ use std::io;
 pub fn get_number_of_players() -> usize {
     println!("How many players?");
     loop {
-        let number_of_players = user_input();
-
-        let number_of_players: usize = match number_of_players.trim().parse() {
-            Ok(nop) => nop,
+        match user_input().trim().parse() {
+            Ok(0) => {
+                println!("You can't play and not play at the same time. This isn't Quantum Theory.");
+            },
+            Ok(nop) => return nop,
             Err(_) => {
                 println!("Please enter an integer.");
-                continue;
             },
         };
-        if number_of_players == 0 {
-            println!("You can't play and not play at the same time. This isn't Quantum Theory.");
-            continue;
-        }
-        return number_of_players
     }
 }
 
